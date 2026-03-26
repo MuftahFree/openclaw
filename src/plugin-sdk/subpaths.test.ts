@@ -574,6 +574,7 @@ describe("plugin-sdk subpath exports", () => {
   it("keeps runtime entry subpaths importable", async () => {
     const [
       coreSdk,
+      channelActionsSdk,
       textRuntimeSdk,
       pluginEntrySdk,
       channelLifecycleSdk,
@@ -582,6 +583,7 @@ describe("plugin-sdk subpath exports", () => {
       ...representativeModules
     ] = await Promise.all([
       importResolvedPluginSdkSubpath("openclaw/plugin-sdk/core"),
+      importResolvedPluginSdkSubpath("openclaw/plugin-sdk/channel-actions"),
       importResolvedPluginSdkSubpath("openclaw/plugin-sdk/text-runtime"),
       importResolvedPluginSdkSubpath("openclaw/plugin-sdk/plugin-entry"),
       importResolvedPluginSdkSubpath("openclaw/plugin-sdk/channel-lifecycle"),
@@ -593,7 +595,10 @@ describe("plugin-sdk subpath exports", () => {
     ]);
 
     expect(coreSdk.definePluginEntry).toBe(pluginEntrySdk.definePluginEntry);
+    expect(typeof coreSdk.stringEnum).toBe("function");
     expect(typeof coreSdk.optionalStringEnum).toBe("function");
+    expect(typeof channelActionsSdk.stringEnum).toBe("function");
+    expect(typeof channelActionsSdk.optionalStringEnum).toBe("function");
     expect(typeof textRuntimeSdk.createScopedExpiringIdCache).toBe("function");
     expect(typeof textRuntimeSdk.resolveGlobalMap).toBe("function");
     expect(typeof textRuntimeSdk.resolveGlobalSingleton).toBe("function");
